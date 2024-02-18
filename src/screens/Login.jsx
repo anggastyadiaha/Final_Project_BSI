@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
-import { View, Image, Dimensions, TouchableOpacity } from "react-native";
+import { View, Dimensions, TouchableOpacity } from "react-native";
 import Container from "../components/Container";
 import TextInputComponent from "../components/TextInputComponent";
 import TextComponent from "../components/TextComponent";
 import ButtonComponent from "../components/ButtonComponent";
+import LogoComponent from "../components/LogoComponent";
 import { http } from "../../plugins/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -17,14 +18,17 @@ const Login = ({ navigation }) => {
   const handleLogin = async () => {
     try {
       setLoading(true);
-      const response = await http.post("auth/login", { email, password });
+      const response = await http.post("auth/login", {
+        email,
+        password,
+      });
 
       await AsyncStorage.setItem("token", response.data?.data?.token ?? "");
 
       navigation.replace("Home");
     } catch (error) {
       console.log(error);
-      alert(error?.response?.data?.message ?? "");
+      alert(error?.response?.data?.message ?? error);
     } finally {
       setLoading(false);
     }
@@ -48,14 +52,14 @@ const Login = ({ navigation }) => {
           justifyContent: "space-between",
           width: size.width,
           paddingHorizontal: 24,
-          paddingBottom: 8,
+          paddingBottom: 18,
         }}
       >
-        <TextComponent color="#fff" fontSize={36} fontWeight={"700"} letterSpacing={-1}>
+        <TextComponent color="#fff" fontSize={36} fontWeight="600">
           Welcome!
         </TextComponent>
 
-        <Image source={require("../../assets/gbk.png")} />
+        <LogoComponent />
       </View>
 
       <View
@@ -65,8 +69,8 @@ const Login = ({ navigation }) => {
           backgroundColor: "#fff",
           borderTopLeftRadius: 36,
           borderTopRightRadius: 36,
-          paddingHorizontal: 24,
-          paddingTop: size.height * 0.04,
+          paddingHorizontal: 18,
+          paddingTop: size.height * 0.1,
           alignItems: "center",
         }}
       >
@@ -77,7 +81,7 @@ const Login = ({ navigation }) => {
           onChange={setEmail}
         />
 
-        <View style={{ marginVertical: 8 }} />
+        <View style={{ marginVertical: 14 }} />
 
         {/* password */}
         <TextInputComponent
@@ -87,18 +91,18 @@ const Login = ({ navigation }) => {
           onChange={setPassword}
         />
 
-        <View style={{ marginVertical: 14 }} />
+        <View style={{ marginVertical: 24 }} />
 
         <ButtonComponent
           label="Masuk"
           isDisable={!isValidForm}
           isLoading={loading}
           styles={{ backgroundColor: "#FFC54D" }}
-          textStyles={{ color: "#fff", fontSize: 18, fontWeight: "600" }}
+          textStyles={{ color: "#fff", fontWeight: "500", fontSize: 18 }}
           onPress={handleLogin}
         />
 
-        <View style={{ marginVertical: 8 }} />
+        <View style={{ marginVertical: 10 }} />
 
         <View style={{ flexDirection: "row" }}>
           <TextComponent fontSize={14}>Belum punya akun?</TextComponent>
@@ -108,7 +112,7 @@ const Login = ({ navigation }) => {
             activeOpacity={1}
             onPress={() => navigation.navigate("Register")}
           >
-            <TextComponent color="#53BF9D" fontSize={14} fontWeight={"bold"}>
+            <TextComponent color="#53BF9D" fontSize={14}>
               Daftar
             </TextComponent>
           </TouchableOpacity>

@@ -106,7 +106,7 @@ const Home = ({ navigation }) => {
             width: size.width,
             height: size.height,
             position: "absolute",
-            backgroundColor: "rgba(255,255,255, 0.8)",
+            backgroundColor: "rgba(255,255,255, 0.5)",
             justifyContent: "center",
             alignItems: "center",
             zIndex: 99,
@@ -115,19 +115,19 @@ const Home = ({ navigation }) => {
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             {status === "winner" && (
               <>
-                <TextComponent color="#53BF9D" fontWeight="600" fontSize={48} letterSpacing={-1}>
+                <TextComponent color="#53BF9D" fontWeight="600" fontSize={48}>
                   Kamu Menang!
                 </TextComponent>
-                <TextComponent fontSize={48}>🎉🎉🎉</TextComponent>
+                <TextComponent fontSize={64}>🎉🎉🎉</TextComponent>
               </>
             )}
 
             {status === "loser" && (
               <>
-                <TextComponent color="#53BF9D" fontWeight="600" fontSize={48} letterSpacing={-1}>
+                <TextComponent color="#53BF9D" fontWeight="600" fontSize={48}>
                   Yah, kalah...
                 </TextComponent>
-                <TextComponent fontSize={48}>😢😢😢</TextComponent>
+                <TextComponent fontSize={64}>😢😢😢</TextComponent>
               </>
             )}
 
@@ -218,8 +218,6 @@ const Home = ({ navigation }) => {
           style={{
             flexDirection: "row",
             position: "absolute",
-            alignItems: "center",
-            justifyContent: "center"
           }}
         >
           <View

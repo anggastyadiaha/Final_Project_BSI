@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import { View, Image, Dimensions, TouchableOpacity, ScrollView } from "react-native";
+import { View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import Container from "../components/Container";
 import TextInputComponent from "../components/TextInputComponent";
 import TextComponent from "../components/TextComponent";
 import ButtonComponent from "../components/ButtonComponent";
+import LogoComponent from "../components/LogoComponent";
 import { http } from "../../plugins/axios";
 
 const size = Dimensions.get("window");
@@ -29,12 +30,16 @@ const Register = ({ navigation }) => {
     try {
       setLoading(true);
 
-      await http.post("auth/register", { name, email, password });
+      await http.post("auth/register", {
+        name,
+        email,
+        password,
+      });
       alert("create new user is successfully");
 
       navigation.replace("Login");
     } catch (error) {
-      alert(error?.response?.data?.message ?? "");
+      alert(error?.response?.data?.message ?? error);
     } finally {
       setLoading(true);
     }
@@ -56,14 +61,14 @@ const Register = ({ navigation }) => {
           justifyContent: "space-between",
           width: size.width,
           paddingHorizontal: 24,
-          paddingBottom: 8,
+          paddingBottom: 18,
         }}
       >
-        <TextComponent color="#fff" fontSize={36} fontWeight={"700"} letterSpacing={-1}>
+        <TextComponent color="#fff" fontSize={36} fontWeight="600">
           Buat Akun
         </TextComponent>
 
-        <Image source={require("../../assets/gbk.png")} />
+        <LogoComponent />
       </View>
 
       <View
@@ -74,7 +79,7 @@ const Register = ({ navigation }) => {
           borderTopLeftRadius: 36,
           justifyContent: "center",
           borderTopRightRadius: 36,
-          paddingTop: size.height * 0.04,
+          paddingTop: size.height * 0.1,
           alignItems: "center",
         }}
       >
@@ -96,7 +101,7 @@ const Register = ({ navigation }) => {
               onChange={setName}
             />
 
-            <View style={{ marginVertical: 8 }} />
+            <View style={{ marginVertical: 14 }} />
 
             {/* email */}
             <TextInputComponent
@@ -105,7 +110,7 @@ const Register = ({ navigation }) => {
               onChange={setEmail}
             />
 
-            <View style={{ marginVertical: 8 }} />
+            <View style={{ marginVertical: 14 }} />
 
             {/* password */}
             <TextInputComponent
@@ -115,7 +120,7 @@ const Register = ({ navigation }) => {
               onChange={setPassword}
             />
 
-            <View style={{ marginVertical: 8 }} />
+            <View style={{ marginVertical: 14 }} />
 
             {/* password confirmation */}
             <TextInputComponent
@@ -125,25 +130,25 @@ const Register = ({ navigation }) => {
               onChange={setPasswordConfirmation}
             />
 
-            <View style={{ marginVertical: 14 }} />
+            <View style={{ marginVertical: 24 }} />
 
             <ButtonComponent
               label="Daftar"
               isLoading={loading}
               isDisable={!isValidForm}
               styles={{ backgroundColor: "#FFC54D" }}
-              textStyles={{ color: "#fff", fontWeight: "600", fontSize: 18 }}
+              textStyles={{ color: "#fff", fontWeight: "500", fontSize: 18 }}
               onPress={handleRegister}
             />
 
-            <View style={{ marginVertical: 8 }} />
+            <View style={{ marginVertical: 10 }} />
 
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                paddingBottom: 14,
+                paddingBottom: 18,
               }}
             >
               <TextComponent fontSize={14}>Sudah punya akun?</TextComponent>
@@ -153,7 +158,7 @@ const Register = ({ navigation }) => {
                 activeOpacity={1}
                 onPress={() => navigation.navigate("Login")}
               >
-                <TextComponent color="#53BF9D" fontSize={14} fontWeight={"bold"}>
+                <TextComponent color="#53BF9D" fontSize={14}>
                   Masuk
                 </TextComponent>
               </TouchableOpacity>

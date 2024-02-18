@@ -39,14 +39,14 @@ const Splash = ({ navigation }) => {
       <Image source={require("../../assets/logo.png")} />
       <View style={{ marginVertical: 100 }} />
       {loading ? (
-        <Text style={{ color: "#fff", fontSize: 18}}>
+        <Text style={{ color: "#fff", fontSize: 18, fontWeight: "500" }}>
           Loading...
         </Text>
       ) : (
         <ButtonComponent
           label="Mulai"
-          textStyles={{ color: "#fff", fontSize: 18, fontWeight: 600 }}
-          styles={{ backgroundColor: "#FFC54D", width: size.width - 42 }}
+          textStyles={{ color: "#fff", fontSize: 18, fontWeight: "500" }}
+          styles={{ backgroundColor: "#FFC54D" }}
           onPress={() => navigation.replace("Login")}
         />
       )}
