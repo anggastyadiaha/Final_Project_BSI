@@ -1,5 +1,1 @@
-import axios from "axios";
-
-export const http = axios.create({
-  baseURL: "https://85.31.232.154",
-});
+export const http = "https://85.31.232.154"

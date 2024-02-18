@@ -1,49 +1,48 @@
 import { useMemo, useState } from "react";
-import { View, Image, Dimensions, TouchableOpacity, ScrollView } from "react-native";
+import { View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import Container from "../components/Container";
 import TextInputComponent from "../components/TextInputComponent";
 import TextComponent from "../components/TextComponent";
 import ButtonComponent from "../components/ButtonComponent";
+import LogoComponent from "../components/LogoComponent";
+import { http } from "../../plugins/axios";
 import axios from "axios";
-import { API_URL } from "../../plugins/constants";
 
 const size = Dimensions.get("window");
 
 const Register = ({ navigation }) => {
-  const [fullName, setName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setPasswordConfirmation] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [loading, setLoading] = useState(false);
 
   const isValidPassword = useMemo(
-    () => password && confirmPassword && password === confirmPassword,
-    [password, confirmPassword]
+    () => password && passwordConfirmation && password === passwordConfirmation,
+    [password, passwordConfirmation]
   );
 
   const isValidForm = useMemo(
-    () => fullName && email && isValidPassword,
-    [fullName, email, isValidPassword]
+    () => name && email && isValidPassword,
+    [name, email, isValidPassword]
   );
 
   const handleRegister = async () => {
     try {
       setLoading(true);
-      console.log({ fullName, email, password, confirmPassword });
-      await axios.post(`${API_URL}/register`, { fullName, email, password, confirmPassword });
-      setFormData({
-        fullName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+
+      await axios.post(`${http}/auth/register`, {
+        name,
+        email,
+        password,
       });
-      alert("create new user is successful!");
+      alert("create new user is successfully");
+
       navigation.replace("Login");
     } catch (error) {
-      alert(error?.response?.data?.message ?? "");
-      setLoading(false)
+      alert(error?.response?.data?.message ?? error);
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   };
 
@@ -63,14 +62,14 @@ const Register = ({ navigation }) => {
           justifyContent: "space-between",
           width: size.width,
           paddingHorizontal: 24,
-          paddingBottom: 8,
+          paddingBottom: 18,
         }}
       >
-        <TextComponent color="#fff" fontSize={36} fontWeight={"700"} letterSpacing={-1}>
+        <TextComponent color="#fff" fontSize={36} fontWeight="600">
           Buat Akun
         </TextComponent>
 
-        <Image source={require("../../assets/gbk.png")} />
+        <LogoComponent />
       </View>
 
       <View
@@ -81,7 +80,7 @@ const Register = ({ navigation }) => {
           borderTopLeftRadius: 36,
           justifyContent: "center",
           borderTopRightRadius: 36,
-          paddingTop: size.height * 0.04,
+          paddingTop: size.height * 0.1,
           alignItems: "center",
         }}
       >
@@ -99,11 +98,11 @@ const Register = ({ navigation }) => {
             {/* name */}
             <TextInputComponent
               placeholder="Nama"
-              value={fullName}
+              value={name}
               onChange={setName}
             />
 
-            <View style={{ marginVertical: 8 }} />
+            <View style={{ marginVertical: 14 }} />
 
             {/* email */}
             <TextInputComponent
@@ -112,7 +111,7 @@ const Register = ({ navigation }) => {
               onChange={setEmail}
             />
 
-            <View style={{ marginVertical: 8 }} />
+            <View style={{ marginVertical: 14 }} />
 
             {/* password */}
             <TextInputComponent
@@ -122,35 +121,35 @@ const Register = ({ navigation }) => {
               onChange={setPassword}
             />
 
-            <View style={{ marginVertical: 8 }} />
+            <View style={{ marginVertical: 14 }} />
 
             {/* password confirmation */}
             <TextInputComponent
               isPassword
               placeholder="Konfirmasi Password"
-              value={confirmPassword}
+              value={passwordConfirmation}
               onChange={setPasswordConfirmation}
             />
 
-            <View style={{ marginVertical: 14 }} />
+            <View style={{ marginVertical: 24 }} />
 
             <ButtonComponent
               label="Daftar"
               isLoading={loading}
               isDisable={!isValidForm}
               styles={{ backgroundColor: "#FFC54D" }}
-              textStyles={{ color: "#fff", fontWeight: "600", fontSize: 18 }}
+              textStyles={{ color: "#fff", fontWeight: "500", fontSize: 18 }}
               onPress={handleRegister}
             />
 
-            <View style={{ marginVertical: 8 }} />
+            <View style={{ marginVertical: 10 }} />
 
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                paddingBottom: 14,
+                paddingBottom: 18,
               }}
             >
               <TextComponent fontSize={14}>Sudah punya akun?</TextComponent>
@@ -160,7 +159,7 @@ const Register = ({ navigation }) => {
                 activeOpacity={1}
                 onPress={() => navigation.navigate("Login")}
               >
-                <TextComponent color="#53BF9D" fontSize={14} fontWeight={"bold"}>
+                <TextComponent color="#53BF9D" fontSize={14}>
                   Masuk
                 </TextComponent>
               </TouchableOpacity>
