@@ -4,39 +4,46 @@ import Container from "../components/Container";
 import TextInputComponent from "../components/TextInputComponent";
 import TextComponent from "../components/TextComponent";
 import ButtonComponent from "../components/ButtonComponent";
-import { http } from "../../plugins/axios";
+import axios from "axios";
+import { API_URL } from "../../plugins/constants";
 
 const size = Dimensions.get("window");
 
 const Register = ({ navigation }) => {
-  const [name, setName] = useState("");
+  const [fullName, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [confirmPassword, setPasswordConfirmation] = useState("");
   const [loading, setLoading] = useState(false);
 
   const isValidPassword = useMemo(
-    () => password && passwordConfirmation && password === passwordConfirmation,
-    [password, passwordConfirmation]
+    () => password && confirmPassword && password === confirmPassword,
+    [password, confirmPassword]
   );
 
   const isValidForm = useMemo(
-    () => name && email && isValidPassword,
-    [name, email, isValidPassword]
+    () => fullName && email && isValidPassword,
+    [fullName, email, isValidPassword]
   );
 
   const handleRegister = async () => {
     try {
       setLoading(true);
-
-      await http.post("auth/register", { name, email, password });
-      alert("create new user is successfully");
-
+      console.log({ fullName, email, password, confirmPassword });
+      await axios.post(`${API_URL}/register`, { fullName, email, password, confirmPassword });
+      setFormData({
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      alert("create new user is successful!");
       navigation.replace("Login");
     } catch (error) {
       alert(error?.response?.data?.message ?? "");
+      setLoading(false)
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -92,7 +99,7 @@ const Register = ({ navigation }) => {
             {/* name */}
             <TextInputComponent
               placeholder="Nama"
-              value={name}
+              value={fullName}
               onChange={setName}
             />
 
@@ -121,7 +128,7 @@ const Register = ({ navigation }) => {
             <TextInputComponent
               isPassword
               placeholder="Konfirmasi Password"
-              value={passwordConfirmation}
+              value={confirmPassword}
               onChange={setPasswordConfirmation}
             />
 

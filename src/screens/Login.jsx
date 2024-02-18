@@ -4,8 +4,9 @@ import Container from "../components/Container";
 import TextInputComponent from "../components/TextInputComponent";
 import TextComponent from "../components/TextComponent";
 import ButtonComponent from "../components/ButtonComponent";
-import { http } from "../../plugins/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { API_URL } from "../../plugins/constants";
 
 const size = Dimensions.get("window");
 
@@ -17,7 +18,7 @@ const Login = ({ navigation }) => {
   const handleLogin = async () => {
     try {
       setLoading(true);
-      const response = await http.post("auth/login", { email, password });
+      const response = await axios.post(`${API_URL}/login`, { email, password });
 
       await AsyncStorage.setItem("token", response.data?.data?.token ?? "");
 
